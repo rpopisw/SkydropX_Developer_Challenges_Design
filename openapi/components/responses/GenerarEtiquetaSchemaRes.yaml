@@ -1,0 +1,6 @@
+description: Entidad para la respuesta de generar etiqueta
+content:
+  application/json:
+    schema:
+      allOf:
+        - $ref: ../schemas/model_response/GenerarEtiquetaSchemaRes.yaml

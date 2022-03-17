@@ -1,0 +1,12 @@
+description: Gateway timeout
+content:
+  application/json:
+    schema:
+      $ref: ../schemas/error/StandardResponseError.yaml
+    example:
+      error:
+        code: GATEWAY_TIMEOUT
+        httpStatus: 504
+        message: Servicio no disponible.
+        details: null
+      payload: null

@@ -1,0 +1,8 @@
+name: x-api-key
+in: header
+description: Código único del Cliente.
+required: true
+schema:
+  type: string
+  minLength: 10
+  example: 125THE7YFR510TD2756

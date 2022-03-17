@@ -1,0 +1,6 @@
+description: Entidad para la respuesta de consulta de estado de etiqueta
+content:
+  application/json:
+    schema:
+      allOf:
+        - $ref: ../schemas/model_response/ObtenerEstadoEtiquetaRes.yaml

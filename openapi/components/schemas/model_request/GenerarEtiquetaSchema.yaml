@@ -1,0 +1,101 @@
+type: object
+description: entidad para generar etiqueta
+properties:
+  payload:
+    type: object
+    properties:
+      data: 
+        type: array
+        description: lista de pedidios que seran enviados para generar la etiqueta
+        items: 
+          type: object
+          properties: 
+            carrier: 
+              type: string
+              description: nombre del carrier
+              pattern: ^[A-Z-_\s]+$
+            shipment:
+              type: object
+              description: Datos para el envio del pedido
+              properties:
+                address_from:
+                  type: object
+                  pattern: ^[A-Z-_\s]+$
+                  description: Datos del origen del pedido
+                  properties: 
+                    name: 
+                      type: string
+                      pattern: ^[A-Z-_\s]+$
+                      description: Nombre del cliente que entregara el pedido
+                    street1:
+                      type: string
+                      pattern: ^[A-Z-_\s]+$
+                      description: Nombre de la calle                     
+                    city: 
+                      type: string
+                      pattern: ^[A-Z-_\s]+$
+                      description: codigo de la ciudad    
+                    province:
+                      type: string
+                      pattern: ^[A-Z-_\s]+$
+                      description: codigo de la provincia    
+                    postal_code: 
+                      type: string
+                      pattern: ^[A-Z-_\s]+$
+                      description: codigo postal
+                    country_code:
+                      type: string
+                      pattern: ^[A-Z-_\s]+$
+                      description: codigo del pais    
+                address_to:
+                  type: object
+                  description: Datos del destino del pedido
+                  properties: 
+                    name: 
+                      type: string
+                      pattern: ^[A-Z-_\s]+$
+                      description: Nombre del cliente que entregara el pedido
+                    street1:
+                      type: string
+                      pattern: ^[A-Z-_\s]+$
+                      description: Nombre de la calle                     
+                    city: 
+                      type: string
+                      pattern: ^[A-Z-_\s]+$
+                      description: codigo de la ciudad    
+                    province:
+                      type: string
+                      pattern: ^[A-Z-_\s]+$
+                      description: codigo de la provincia    
+                    postal_code: 
+                      type: string
+                      pattern: ^[A-Z-_\s]+$
+                      description: codigo postal
+                    country_code:
+                      type: string
+                      pattern: ^[A-Z-_\s]+$
+                      description: codigo del pais  
+                parcels:
+                  type: array
+                  description: Datos del producto que sera enviado
+                  items: 
+                    type: object 
+                    properties: 
+                      length: 
+                        type: number
+                        description: Tamaño del producto 
+                      width: 
+                        type: number
+                        description: Ancho del producto 
+                      height: 
+                        type: number  
+                        description: Alto del producto                         
+                      dimensions_unit: 
+                        type: number
+                        description: Dimensiones del producto por unidad                        
+                      weight: 
+                        type: number
+                        description: Peso del producto
+                      weight_unit: 
+                        description: Peso del producto por unidad           
+

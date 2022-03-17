@@ -1,0 +1,12 @@
+description: Accepted
+content:
+  application/json:
+    schema:
+      $ref: ../schemas/error/StandardResponseError.yaml
+    example:
+      error:
+        httpStatus: 202
+        code: ACCEPTED
+        message: Petición aceptada pero no procesada.
+        details: null
+      payload: null

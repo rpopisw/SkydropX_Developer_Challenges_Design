@@ -1,0 +1,38 @@
+parameters:
+  - $ref: ../components/parameters/TraceId.yaml
+  - $ref: ../components/parameters/DateTime.yaml
+get:
+  summary: Obtener archivo zip
+  description: >
+    Con este servicio obtendremos el archizo zip con los pdf
+  tags:
+    - Multi-carrier Shipping Labels
+  parameters:
+    - name: id_solicitud
+      in: path
+      description: >
+        Identificador de la solicitud para generear etiqueta
+      required: true
+      schema:
+        type: string
+        maxLength: 36
+        minLength: 36
+        pattern: '^([A-Za-z]|[0-9]|-)+$'
+        example: 62977d46-7a50-41c9-8d84-38272ac2a8df
+  responses:
+    '200':
+      $ref: ../components/responses/ObtenerArchivoZipRes.yaml
+    '400':
+      $ref: ../components/responses/BadRequestResponse.yaml
+    '401':
+      $ref: ../components/responses/UnauthorizedResponse.yaml
+    '403':
+      $ref: ../components/responses/ForbiddenResponse.yaml
+    '500':
+      $ref: ../components/responses/InternalServerErrorResponse.yaml
+    '504':
+      $ref: ../components/responses/GatewayTimeoutResponse.yaml
+    default:
+      $ref: ../components/responses/UnexpectedErrorResponse.yaml
+  security:
+    - Sigv4: []

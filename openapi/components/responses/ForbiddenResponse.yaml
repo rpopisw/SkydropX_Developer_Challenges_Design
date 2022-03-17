@@ -1,0 +1,12 @@
+description: Forbidden
+content:
+  application/json:
+    schema:
+      $ref: ../schemas/error/StandardResponseError.yaml
+    example:
+      error:
+        code: FORBIDDEN
+        httpStatus: 403
+        message: El cliente no está autorizado a realizar la petición.
+        details: null
+      payload: null

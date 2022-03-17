@@ -1,0 +1,33 @@
+openapi: 3.0.1
+info:
+  title: API SkydropX Challenges
+  description: API Design
+  version: 1.0.0
+  contact:
+    name: Robert Popi Requis
+    email: roberth1136@gmail.com
+    x-role: Software Enginner
+  x-logo:
+    url: https://www.skydropx.com/assets/landing5/skydropx-logo-og-10f6b362dda59a3834fc59ed42ffcf42999bdf58bef9e080cf998c7a343ab581.png
+    altText: SkydropX logo
+servers:
+  - url: 'https://api.skydropX.com/api-shipping-labels/v1/'
+    description: Servidor
+tags:
+  - name: Multi-carrier Shipping Labels
+    description: Servicios para generacion de etiquetas y descarga
+paths:
+  '/etiqueta-paquete':
+    $ref: 'paths/etiqueta-paqueteria.yaml'    
+  '/etiqueta-paquete/{id_solicitud}/estado':
+    $ref: 'paths/etiqueta-paqueteria@{id_solicitud}@estado.yaml'  
+  '/etiqueta-paquete/{id_solicitud}/archivo-zip':
+    $ref: 'paths/etiqueta-paqueteria@{id_solicitud}@archivo-zip.yaml'         
+components:
+  securitySchemes:
+    Sigv4:
+      description: Autenticación a través de firma de usuario amazon.
+      type: apiKey
+      name: Authorization
+      in: header
+      x-amazon-apigateway-authtype: awsSigv4

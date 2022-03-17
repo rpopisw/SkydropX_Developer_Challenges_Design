@@ -1,0 +1,12 @@
+type: object
+description: Entidad de respuesta para generar etiqueta
+properties:
+  payload:
+    type: object
+    description: Entidad
+    properties:
+      idSolicitud:
+        type: string
+        description: Id de solicitud de generarcion de etiqueta
+        example: 62977d46-7a50-41c9-8d84-38272ac2a8df
+        

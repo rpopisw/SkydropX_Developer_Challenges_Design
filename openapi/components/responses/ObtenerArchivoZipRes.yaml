@@ -1,0 +1,6 @@
+description: Entidad para la respuesta de obtener archivo zip
+content:
+  application/zip:
+    schema:
+      type: string
+      format: binary

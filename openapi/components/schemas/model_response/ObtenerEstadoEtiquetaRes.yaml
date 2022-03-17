@@ -1,0 +1,16 @@
+type: object
+description: Entidad respuesta para generar etiqueta
+properties:
+  payload:
+    type: object
+    description: Entidad
+    properties:
+      status:
+        type: string
+        description: estado actual de la generacion de etiqueta
+        example: completed
+      url:
+        type: string
+        description: url del archivo zip para su descarga  
+        example: https://fake-carrier.s3.amazonaws.com/nr4sooqnsrr39pc5rslnkebxbb80
+        

@@ -1,0 +1,8 @@
+properties:
+  error:
+    $ref: ./StandardError.yaml
+  payload:
+    type: object
+required:
+  - error
+  - payload

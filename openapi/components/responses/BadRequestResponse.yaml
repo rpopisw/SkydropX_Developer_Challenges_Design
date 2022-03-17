@@ -1,0 +1,14 @@
+description: Bad Request
+content:
+  application/json:
+    schema:
+        $ref: ../schemas/error/StandardResponseError.yaml
+    example:
+      error:
+        httpStatus: 400
+        code: BAD_REQUEST
+        message: Petición incorrecta
+        details:
+          - Mensaje de error para parámetro 1
+          - Mensaje de error para parámetro 2
+      payload: null

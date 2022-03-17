@@ -1,0 +1,10 @@
+name: dateTime
+in: header
+description: Fecha y hora de la invocación al servicio.
+required: true
+schema:
+  type: string
+  format: date-time
+  maxLength: 20
+  minLength: 20
+  example: '2020-12-31T23:59:60Z'

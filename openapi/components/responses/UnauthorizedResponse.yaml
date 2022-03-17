@@ -1,0 +1,12 @@
+description: Unauthorized
+content:
+  application/json:
+    schema:
+      $ref: ../schemas/error/StandardResponseError.yaml
+    example:
+      error:
+        code: UNAUTHORIZED
+        httpStatus: 401
+        message: La petición requiere autenticación
+        details: null
+      payload: null

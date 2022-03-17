@@ -1,0 +1,27 @@
+parameters:
+  - $ref: ../components/parameters/TraceId.yaml
+  - $ref: ../components/parameters/DateTime.yaml
+post:
+  summary: Generar Etiqueta
+  description: Endpoint para generar etiqueta
+  tags:
+    - Multi-carrier Shipping Labels
+  requestBody:
+    $ref: ../components/requestBodies/GenerarEtiquetaReq.yaml
+  responses:
+    '201':
+      $ref: ../components/responses/GenerarEtiquetaSchemaRes.yaml
+    '400':
+      $ref: ../components/responses/BadRequestResponse.yaml
+    '401':
+      $ref: ../components/responses/UnauthorizedResponse.yaml
+    '403':
+      $ref: ../components/responses/ForbiddenResponse.yaml
+    '500':
+      $ref: ../components/responses/InternalServerErrorResponse.yaml
+    '504':
+      $ref: ../components/responses/GatewayTimeoutResponse.yaml
+    default:
+      $ref: ../components/responses/UnexpectedErrorResponse.yaml
+  security:
+    - Sigv4: []
