@@ -1,0 +1,507 @@
+openapi: 3.0.1
+info:
+  title: API SkydropX Challenges
+  description: API Design
+  version: 1.0.0
+  contact:
+    name: Robert Popi Requis
+    email: roberth1136@gmail.com
+    x-role: Software Enginner
+  x-logo:
+    url: >-
+      https://www.skydropx.com/assets/landing5/skydropx-logo-og-10f6b362dda59a3834fc59ed42ffcf42999bdf58bef9e080cf998c7a343ab581.png
+    altText: SkydropX logo
+servers:
+  - url: 'https://api.skydropX.com/api-shipping-labels/v1/'
+    description: Servidor
+tags:
+  - name: Multi-carrier Shipping Labels
+    description: Servicios para generacion de etiquetas y descarga
+paths:
+  /etiqueta-paquete:
+    parameters:
+      - $ref: '#/components/parameters/TraceId'
+      - $ref: '#/components/parameters/DateTime'
+    post:
+      summary: Generar Etiqueta
+      description: Endpoint para generar etiqueta
+      tags:
+        - Multi-carrier Shipping Labels
+      requestBody:
+        $ref: '#/components/requestBodies/GenerarEtiquetaReq'
+      responses:
+        '201':
+          $ref: '#/components/responses/GenerarEtiquetaSchemaRes'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerErrorResponse'
+        '504':
+          $ref: '#/components/responses/GatewayTimeoutResponse'
+        default:
+          $ref: '#/components/responses/UnexpectedErrorResponse'
+      security:
+        - Sigv4: []
+  '/etiqueta-paquete/{id_solicitud}/estado':
+    parameters:
+      - $ref: '#/components/parameters/TraceId'
+      - $ref: '#/components/parameters/DateTime'
+    get:
+      summary: Consultar estado de la etiqueta de paqueteria generada
+      description: >
+        Con este servicio obtendremos el estado actual de la generacion de la
+        etiqueta de paqueteria y tambien la url de la descarga.
+      tags:
+        - Multi-carrier Shipping Labels
+      parameters:
+        - name: id_solicitud
+          in: path
+          description: |
+            Identificador de la solicitud para generear etiqueta
+          required: true
+          schema:
+            type: string
+            maxLength: 36
+            minLength: 36
+            pattern: '^([A-Za-z]|[0-9]|-)+$'
+            example: 62977d46-7a50-41c9-8d84-38272ac2a8df
+      responses:
+        '200':
+          $ref: '#/components/responses/ObtenerEstadoEtiquetaRes'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerErrorResponse'
+        '504':
+          $ref: '#/components/responses/GatewayTimeoutResponse'
+        default:
+          $ref: '#/components/responses/UnexpectedErrorResponse'
+      security:
+        - Sigv4: []
+  '/etiqueta-paquete/{id_solicitud}/archivo-zip':
+    parameters:
+      - $ref: '#/components/parameters/TraceId'
+      - $ref: '#/components/parameters/DateTime'
+    get:
+      summary: Obtener archivo zip
+      description: |
+        Con este servicio obtendremos el archizo zip con los pdf
+      tags:
+        - Multi-carrier Shipping Labels
+      parameters:
+        - name: id_solicitud
+          in: path
+          description: |
+            Identificador de la solicitud para generear etiqueta
+          required: true
+          schema:
+            type: string
+            maxLength: 36
+            minLength: 36
+            pattern: '^([A-Za-z]|[0-9]|-)+$'
+            example: 62977d46-7a50-41c9-8d84-38272ac2a8df
+      responses:
+        '200':
+          $ref: '#/components/responses/ObtenerArchivoZipRes'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerErrorResponse'
+        '504':
+          $ref: '#/components/responses/GatewayTimeoutResponse'
+        default:
+          $ref: '#/components/responses/UnexpectedErrorResponse'
+      security:
+        - Sigv4: []
+components:
+  securitySchemes:
+    Sigv4:
+      description: Autenticación a través de firma de usuario amazon.
+      type: apiKey
+      name: Authorization
+      in: header
+      x-amazon-apigateway-authtype: awsSigv4
+  parameters:
+    TraceId:
+      name: traceId
+      in: header
+      description: Identificador unico de la transacción
+      required: true
+      schema:
+        type: string
+        format: uuid
+        minLength: 36
+        maxLength: 36
+        pattern: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
+        example: 62977d46-7a50-41c9-8d84-38272ac2a8df
+    DateTime:
+      name: dateTime
+      in: header
+      description: Fecha y hora de la invocación al servicio.
+      required: true
+      schema:
+        type: string
+        format: date-time
+        maxLength: 20
+        minLength: 20
+        example: '2020-12-31T23:59:60Z'
+  schemas:
+    GenerarEtiquetaSchema:
+      type: object
+      description: entidad para generar etiqueta
+      properties:
+        payload:
+          type: object
+          properties:
+            data:
+              type: array
+              description: lista de pedidios que seran enviados para generar la etiqueta
+              items:
+                type: object
+                properties:
+                  carrier:
+                    type: string
+                    description: nombre del carrier
+                    pattern: '^[A-Z-_\s]+$'
+                  shipment:
+                    type: object
+                    description: Datos para el envio del pedido
+                    properties:
+                      address_from:
+                        type: object
+                        pattern: '^[A-Z-_\s]+$'
+                        description: Datos del origen del pedido
+                        properties:
+                          name:
+                            type: string
+                            pattern: '^[A-Z-_\s]+$'
+                            description: Nombre del cliente que entregara el pedido
+                          street1:
+                            type: string
+                            pattern: '^[A-Z-_\s]+$'
+                            description: Nombre de la calle
+                          city:
+                            type: string
+                            pattern: '^[A-Z-_\s]+$'
+                            description: codigo de la ciudad
+                          province:
+                            type: string
+                            pattern: '^[A-Z-_\s]+$'
+                            description: codigo de la provincia
+                          postal_code:
+                            type: string
+                            pattern: '^[A-Z-_\s]+$'
+                            description: codigo postal
+                          country_code:
+                            type: string
+                            pattern: '^[A-Z-_\s]+$'
+                            description: codigo del pais
+                      address_to:
+                        type: object
+                        description: Datos del destino del pedido
+                        properties:
+                          name:
+                            type: string
+                            pattern: '^[A-Z-_\s]+$'
+                            description: Nombre del cliente que entregara el pedido
+                          street1:
+                            type: string
+                            pattern: '^[A-Z-_\s]+$'
+                            description: Nombre de la calle
+                          city:
+                            type: string
+                            pattern: '^[A-Z-_\s]+$'
+                            description: codigo de la ciudad
+                          province:
+                            type: string
+                            pattern: '^[A-Z-_\s]+$'
+                            description: codigo de la provincia
+                          postal_code:
+                            type: string
+                            pattern: '^[A-Z-_\s]+$'
+                            description: codigo postal
+                          country_code:
+                            type: string
+                            pattern: '^[A-Z-_\s]+$'
+                            description: codigo del pais
+                      parcels:
+                        type: array
+                        description: Datos del producto que sera enviado
+                        items:
+                          type: object
+                          properties:
+                            length:
+                              type: number
+                              description: Tamaño del producto
+                            width:
+                              type: number
+                              description: Ancho del producto
+                            height:
+                              type: number
+                              description: Alto del producto
+                            dimensions_unit:
+                              type: number
+                              description: Dimensiones del producto por unidad
+                            weight:
+                              type: number
+                              description: Peso del producto
+                            weight_unit:
+                              description: Peso del producto por unidad
+    GenerarEtiquetaSchemaRes:
+      type: object
+      description: Entidad de respuesta para generar etiqueta
+      properties:
+        payload:
+          type: object
+          description: Entidad
+          properties:
+            idSolicitud:
+              type: string
+              description: Id de solicitud de generarcion de etiqueta
+              example: 62977d46-7a50-41c9-8d84-38272ac2a8df
+    StandardError:
+      type: object
+      properties:
+        httpStatus:
+          type: integer
+          description: Código http de la respuesta
+          example: 200
+        message:
+          type: string
+          description: Descripción breve del error
+          example: Petición ejecutada satisfactoriamente
+        code:
+          type: string
+          description: Código interno de error si se desea especificar
+          example: '-'
+        details:
+          type: array
+          description: Array de errores
+          items:
+            type: string
+          example: null
+      required:
+        - httpStatus
+        - message
+        - code
+        - details
+    StandardResponseError:
+      properties:
+        error:
+          $ref: '#/components/schemas/StandardError'
+        payload:
+          type: object
+      required:
+        - error
+        - payload
+    ObtenerEstadoEtiquetaRes:
+      type: object
+      description: Entidad respuesta para generar etiqueta
+      properties:
+        payload:
+          type: object
+          description: Entidad
+          properties:
+            status:
+              type: string
+              description: estado actual de la generacion de etiqueta
+              example: completed
+            url:
+              type: string
+              description: url del archivo zip para su descarga
+              example: >-
+                https://fake-carrier.s3.amazonaws.com/nr4sooqnsrr39pc5rslnkebxbb80
+  requestBodies:
+    GenerarEtiquetaReq:
+      description: Entidad para generar etiquetas de paqueteria
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GenerarEtiquetaSchema'
+          example:
+            payload:
+              data:
+                - carrier: fake_carrier
+                  shipment:
+                    address_from:
+                      name: Fernando López
+                      street1: 'Av. Principal #123'
+                      city: Azcapotzalco
+                      province: Ciudad de México
+                      postal_code: 02900
+                      country_code: MX
+                    address_to:
+                      name: Isabel Arredondo
+                      street1: 'Av. Las Torres #123'
+                      city: Puebla
+                      province: Puebla
+                      postal_code: '72450'
+                      country_code: MX
+                    parcels:
+                      - length: 40
+                        width: 40
+                        height: 40
+                        dimensions_unit: CM
+                        weight: 5
+                        weight_unit: KG
+                - carrier: fake_carrier
+                  shipment:
+                    address_from:
+                      name: Verónica Bravo
+                      street1: 'Av. Adolfo Prieto #157-6'
+                      city: Nuevo León
+                      province: Monterrey
+                      postal_code: '64010'
+                      country_code: MX
+                    address_to:
+                      name: Jorge Mendoza
+                      street1: 'Calle 62 #2568'
+                      city: Mérida
+                      province: Yucatán
+                      postal_code: '97000'
+                      country_code: MX
+                    parcels:
+                      - length: 102
+                        width: 52
+                        height: 80
+                        dimensions_unit: CM
+                        weight: 7.5
+                        weight_unit: KG
+                - carrier: fake_carrier
+                  shipment:
+                    address_from:
+                      name: Leonardo Rodríguez
+                      street1: 'Calz. Juárez #58'
+                      city: Morelia
+                      province: Michoacan
+                      postal_code: '58070'
+                      country_code: MX
+                    address_to:
+                      name: Ruben Arroyo
+                      street1: 'Calle Esteban Loera #428'
+                      city: Guadalajara
+                      province: Jalisco
+                      postal_code: '44380'
+                      country_code: MX
+                    parcels:
+                      - length: 52
+                        width: 98
+                        height: 52
+                        dimensions_unit: CM
+                        weight: 3.68
+                        weight_unit: KG
+  responses:
+    GenerarEtiquetaSchemaRes:
+      description: Entidad para la respuesta de generar etiqueta
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/GenerarEtiquetaSchemaRes'
+    BadRequestResponse:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/StandardResponseError'
+          example:
+            error:
+              httpStatus: 400
+              code: BAD_REQUEST
+              message: Petición incorrecta
+              details:
+                - Mensaje de error para parámetro 1
+                - Mensaje de error para parámetro 2
+            payload: null
+    UnauthorizedResponse:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/StandardResponseError'
+          example:
+            error:
+              code: UNAUTHORIZED
+              httpStatus: 401
+              message: La petición requiere autenticación
+              details: null
+            payload: null
+    ForbiddenResponse:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/StandardResponseError'
+          example:
+            error:
+              code: FORBIDDEN
+              httpStatus: 403
+              message: El cliente no está autorizado a realizar la petición.
+              details: null
+            payload: null
+    InternalServerErrorResponse:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/StandardResponseError'
+          example:
+            error:
+              code: INTERNAL_SERVER_ERROR
+              httpStatus: 500
+              message: Se ha producido un error inesperado en el servidor.
+              details: null
+            payload: null
+    GatewayTimeoutResponse:
+      description: Gateway timeout
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/StandardResponseError'
+          example:
+            error:
+              code: GATEWAY_TIMEOUT
+              httpStatus: 504
+              message: Servicio no disponible.
+              details: null
+            payload: null
+    UnexpectedErrorResponse:
+      description: Unexpected error response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/StandardResponseError'
+          example:
+            error:
+              code: INTERNAL_SERVER_ERROR
+              httpStatus: 500
+              message: Se ha producido un error inesperado en el servidor
+              details: null
+            payload: null
+    ObtenerEstadoEtiquetaRes:
+      description: Entidad para la respuesta de consulta de estado de etiqueta
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/ObtenerEstadoEtiquetaRes'
+    ObtenerArchivoZipRes:
+      description: Entidad para la respuesta de obtener archivo zip
+      content:
+        application/zip:
+          schema:
+            type: string
+            format: binary

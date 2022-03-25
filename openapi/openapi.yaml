@@ -11,7 +11,7 @@ info:
     url: https://www.skydropx.com/assets/landing5/skydropx-logo-og-10f6b362dda59a3834fc59ed42ffcf42999bdf58bef9e080cf998c7a343ab581.png
     altText: SkydropX logo
 servers:
-  - url: 'https://api.skydropX.com/api-shipping-labels/v1/'
+  - url: 'https://74f1m1d6ha.execute-api.us-east-1.amazonaws.com/dev/v1'
     description: Servidor
 tags:
   - name: Multi-carrier Shipping Labels

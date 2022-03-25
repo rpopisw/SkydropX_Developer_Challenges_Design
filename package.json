@@ -1,5 +1,5 @@
 {
-    "name": "arq-rimac-template-design",
+    "name": "design",
     "version": "1.0.0",
     "dependencies": {
         "@redocly/openapi-cli": "^0.12.16"
