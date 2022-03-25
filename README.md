@@ -33,7 +33,7 @@ NPM
 
 ![image](https://user-images.githubusercontent.com/58491049/155582293-c6bd943f-24fb-40b2-9c13-8c5f2ffdc03e.png)
 
-### Ejecutas 
+### Ejecutar
 ```
     npm run start
 ```
